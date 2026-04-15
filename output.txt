@@ -1,0 +1,296 @@
+TEST SUITES FOR MODULE interpit
+Test Suite: programs that work with pre-written interpit.lua
+    Test: Empty program - {PROGRAM}
+passed
+    Test: Empty statement - {PROGRAM, {EMPTY_STMT}}
+passed
+    Test: 2 empty statements - {PROGRAM, {EMPTY_STMT}, {EMPTY_STMT}}
+passed
+    Test: Output nothing - {PROGRAM, {PRINT_STMT}}
+passed
+    Test: Output newline - {PROGRAM, {PRINTLN_STMT}}
+passed
+    Test: Output: empty string - {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"\""}}}
+passed
+    Test: Output: string, double-quoted - {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"def\""}}}
+passed
+    Test: Output: string, single-quoted - {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "'def'"}}}
+passed
+    Test: Output: string, double-quoted - {PROGRAM, {PRINTLN_STMT, {STRLIT_OUT, "\"ghi\""}}}
+passed
+    Test: Output: string + string - {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"abc\""}, {STRLIT_OUT, "\"def\""}}}
+passed
+    Test: Output: number - {PROGRAM, {PRINT_STMT, {NUMLIT_VAL, "999"}}}
+passed
+    Test: Output: number + number + number - {PROGRAM, {PRINT_STMT, {NUMLIT_VAL, "78"}, {NUMLIT_VAL, "78e2"}, {NUMLIT_VAL, "78e+4"}}}
+passed
+    Test: Output: string + number + number + string - {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"abc\""}, {NUMLIT_VAL, "045"}, {NUMLIT_VAL, "1"}, {STRLIT_OUT, "\"x\""}}}
+passed
+    Test: Func, no call - {PROGRAM, {FUNC_DEF, "x", {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"abc\""}}}}}
+passed
+    Test: Call, no func - {PROGRAM, {FUNC_CALL, "x"}}
+{PROGRAM}
+passed
+    Test: Func with call (wrong name) - {PROGRAM, {FUNC_DEF, "x", {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"abc\""}}}}, {FUNC_CALL, "y"}}
+{PROGRAM}
+passed
+    Test: Func with call (right name) - {PROGRAM, {FUNC_DEF, "x", {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"abc\""}}}}, {FUNC_CALL, "x"}}
+{PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"abc\""}}}
+passed
+    Test: Func defs func, no call - {PROGRAM, {FUNC_DEF, "x", {PROGRAM, {FUNC_DEF, "y", {PROGRAM}}}}}
+passed
+    Test: Func defs func, with call - {PROGRAM, {FUNC_DEF, "x", {PROGRAM, {FUNC_DEF, "y", {PROGRAM}}}}, {FUNC_CALL, "x"}}
+{PROGRAM, {FUNC_DEF, "y", {PROGRAM}}}
+passed
+Test Suite: simple programs
+    Test: Simple assignment: number - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "a"}, {NUMLIT_VAL, "12"}}}
+passed
+    Test: Simple if #1 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM}}}
+passed
+    Test: Simple if #2 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "4"}, {PROGRAM}}}
+passed
+    Test: Simple while - {PROGRAM, {WHILE_LOOP, {NUMLIT_VAL, "0"}, {PROGRAM}}}
+passed
+    Test: Output: undefined variable - {PROGRAM, {PRINT_STMT, {SIMPLE_VAR, "d"}}}
+passed
+    Test: Simple input - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "b"}, {READ_CALL}}}
+********** FAILED **********
+    Test: Set + output: variable - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "c"}, {NUMLIT_VAL, "57"}}, {PRINT_STMT, {SIMPLE_VAR, "c"}}}
+passed
+    Test: Set + output: other variable - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "c"}, {NUMLIT_VAL, "57"}}, {PRINT_STMT, {SIMPLE_VAR, "d"}}}
+passed
+    Test: Set + output: var + number + eol - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "x"}, {NUMLIT_VAL, "5"}}, {PRINTLN_STMT, {SIMPLE_VAR, "x"}, {NUMLIT_VAL, "28"}}}
+passed
+    Test: Input + output: variable - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "c"}, {READ_CALL}}, {PRINT_STMT, {SIMPLE_VAR, "c"}}}
+********** FAILED **********
+    Test: Input + output: other variable - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "c"}, {READ_CALL}}, {PRINT_STMT, {SIMPLE_VAR, "d"}}}
+********** FAILED **********
+    Test: Set array - {PROGRAM, {ASSN_STMT, {ARRAY_VAR, "a", {NUMLIT_VAL, "2"}}, {NUMLIT_VAL, "7"}}}
+passed
+Test Suite: modified initial state
+    Test: Modified initial state: empty program - {PROGRAM}
+passed
+    Test: Modified initial state: set simple var #1 - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "a"}, {NUMLIT_VAL, "3"}}}
+passed
+    Test: Modified initial state: set simple var #2 - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "c"}, {NUMLIT_VAL, "3"}}}
+passed
+    Test: Modified initial state: set array #1 - {PROGRAM, {ASSN_STMT, {ARRAY_VAR, "b", {NUMLIT_VAL, "2"}}, {NUMLIT_VAL, "9"}}}
+passed
+    Test: Modified initial state: set array #2 - {PROGRAM, {ASSN_STMT, {ARRAY_VAR, "b", {NUMLIT_VAL, "-5"}}, {NUMLIT_VAL, "9"}}}
+passed
+    Test: Modified initial state: set array #3 - {PROGRAM, {ASSN_STMT, {ARRAY_VAR, "c", {NUMLIT_VAL, "0"}}, {NUMLIT_VAL, "9"}}}
+passed
+    Test: Modified initial state: Output simple var #1 - {PROGRAM, {PRINT_STMT, {SIMPLE_VAR, "a"}}}
+passed
+    Test: Modified initial state: Output simple var #2 - {PROGRAM, {PRINT_STMT, {SIMPLE_VAR, "c"}}}
+passed
+    Test: Modified initial state: Output array #1 - {PROGRAM, {PRINT_STMT, {ARRAY_VAR, "a", {NUMLIT_VAL, "4"}}}}
+passed
+    Test: Modified initial state: Output array #2 - {PROGRAM, {PRINT_STMT, {ARRAY_VAR, "a", {NUMLIT_VAL, "8"}}}}
+passed
+    Test: Modified initial state: Output array #3 - {PROGRAM, {PRINT_STMT, {ARRAY_VAR, "c", {NUMLIT_VAL, "8"}}}}
+passed
+    Test: Modified initial state: Out-set-out-in-out - {PROGRAM, {PRINT_STMT, {SIMPLE_VAR, "abc"}}, {ASSN_STMT, {SIMPLE_VAR, "abc"}, {NUMLIT_VAL, "55"}}, {PRINT_STMT, {SIMPLE_VAR, "abc"}}, {ASSN_STMT, {SIMPLE_VAR, "abc"}, {READ_CALL}}, {PRINT_STMT, {SIMPLE_VAR, "abc"}}}
+********** FAILED **********
+    Test: Modified initial state: Function - {PROGRAM, {FUNC_CALL, "q"}}
+{PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"x\""}}}
+passed
+Test Suite: output special characters
+    Test: Output with char() - {PROGRAM, {PRINT_STMT, {CHR_CALL, {NUMLIT_VAL, "65"}}}}
+********** FAILED **********
+    Test: char() containing nontrivial expression - {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}, {CHR_CALL, {{BIN_OP, "+"}, {NUMLIT_VAL, "60"}, {NUMLIT_VAL, "6"}}}, {STRLIT_OUT, "\"z\""}}}
+********** FAILED **********
+    Test: char() containing out-of-range value #1 - {PROGRAM, {PRINT_STMT, {CHR_CALL, {{UN_OP, "-"}, {NUMLIT_VAL, "1"}}}}}
+********** FAILED **********
+    Test: char() containing out-of-range value #2 - {PROGRAM, {PRINT_STMT, {CHR_CALL, {NUMLIT_VAL, "1000"}}}}
+********** FAILED **********
+    Test: Output several special characters - {PROGRAM, {PRINTLN_STMT, {CHR_CALL, {NUMLIT_VAL, "1"}}, {CHR_CALL, {NUMLIT_VAL, "2"}}}}
+********** FAILED **********
+    Test: String with backslash - {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"\\n\""}}}
+passed
+Test Suite: expressions
+    Test: Output unary + - {PROGRAM, {PRINT_STMT, {{UN_OP, "+"}, {NUMLIT_VAL, "5"}}}}
+passed
+    Test: Output unary - - {PROGRAM, {PRINT_STMT, {{UN_OP, "-"}, {NUMLIT_VAL, "5"}}}}
+passed
+    Test: Output not #1 - {PROGRAM, {PRINT_STMT, {{UN_OP, "!"}, {NUMLIT_VAL, "5"}}}}
+passed
+    Test: Output not #2 - {PROGRAM, {PRINT_STMT, {{UN_OP, "!"}, {NUMLIT_VAL, "0"}}}}
+passed
+    Test: Output not not - {PROGRAM, {PRINT_STMT, {{UN_OP, "!"}, {{UN_OP, "!"}, {NUMLIT_VAL, "0"}}}}}
+passed
+    Test: Output binary + - {PROGRAM, {PRINT_STMT, {{BIN_OP, "+"}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output binary - - {PROGRAM, {PRINT_STMT, {{BIN_OP, "-"}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output * - {PROGRAM, {PRINT_STMT, {{BIN_OP, "*"}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output / - {PROGRAM, {PRINT_STMT, {{BIN_OP, "/"}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output / (div by zero) - {PROGRAM, {PRINT_STMT, {{BIN_OP, "/"}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "0"}}}}
+passed
+    Test: Output % - {PROGRAM, {PRINT_STMT, {{BIN_OP, "%"}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output % (div by zero) - {PROGRAM, {PRINT_STMT, {{BIN_OP, "%"}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "0"}}}}
+passed
+    Test: Output == #1 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "=="}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output == #2 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "=="}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "5"}}}}
+passed
+    Test: Output != #1 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "!="}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output != #2 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "!="}, {NUMLIT_VAL, "5"}, {NUMLIT_VAL, "5"}}}}
+passed
+    Test: Output < #1 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "<"}, {NUMLIT_VAL, "1"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output < #2 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "<"}, {NUMLIT_VAL, "2"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output < #3 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "<"}, {NUMLIT_VAL, "3"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output <= #1 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "<="}, {NUMLIT_VAL, "1"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output <= #2 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "<="}, {NUMLIT_VAL, "2"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output <= #3 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "<="}, {NUMLIT_VAL, "3"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output > #1 - {PROGRAM, {PRINT_STMT, {{BIN_OP, ">"}, {NUMLIT_VAL, "1"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output > #2 - {PROGRAM, {PRINT_STMT, {{BIN_OP, ">"}, {NUMLIT_VAL, "2"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output > #3 - {PROGRAM, {PRINT_STMT, {{BIN_OP, ">"}, {NUMLIT_VAL, "3"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output >= #1 - {PROGRAM, {PRINT_STMT, {{BIN_OP, ">="}, {NUMLIT_VAL, "1"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output >= #2 - {PROGRAM, {PRINT_STMT, {{BIN_OP, ">="}, {NUMLIT_VAL, "2"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output >= #3 - {PROGRAM, {PRINT_STMT, {{BIN_OP, ">="}, {NUMLIT_VAL, "3"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output && #1 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "&&"}, {NUMLIT_VAL, "2"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output && #2 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "&&"}, {NUMLIT_VAL, "2"}, {NUMLIT_VAL, "0"}}}}
+passed
+    Test: Output && #3 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "&&"}, {NUMLIT_VAL, "0"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output && #4 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "&&"}, {NUMLIT_VAL, "0"}, {NUMLIT_VAL, "0"}}}}
+passed
+    Test: Output || #1 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "||"}, {NUMLIT_VAL, "2"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output || #2 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "||"}, {NUMLIT_VAL, "2"}, {NUMLIT_VAL, "0"}}}}
+passed
+    Test: Output || #3 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "||"}, {NUMLIT_VAL, "0"}, {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Output || #4 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "||"}, {NUMLIT_VAL, "0"}, {NUMLIT_VAL, "0"}}}}
+passed
+    Test: Longer expression - {PROGRAM, {PRINT_STMT, {{UN_OP, "-"}, {{BIN_OP, "-"}, {{BIN_OP, "=="}, {SIMPLE_VAR, "x"}, {NUMLIT_VAL, "3"}}, {{BIN_OP, "*"}, {{BIN_OP, "+"}, {NUMLIT_VAL, "8"}, {SIMPLE_VAR, "x"}}, {{UN_OP, "+"}, {SIMPLE_VAR, "y"}}}}}}}
+********** FAILED **********
+Test Suite: integer conversion
+    Test: Integer conversion: numeric literal #1 - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "n"}, {NUMLIT_VAL, "5.4"}}}
+passed
+    Test: Integer conversion: numeric literal #2 - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "n"}, {NUMLIT_VAL, "-7.4"}}}
+passed
+    Test: Integer conversion: numeric literal #3 - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "n"}, {NUMLIT_VAL, "5.74e1"}}}
+passed
+    Test: Integer conversion: input - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "n"}, {READ_CALL}}}
+********** FAILED **********
+    Test: Integer conversion: division + multiplication #1 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "*"}, {{BIN_OP, "/"}, {NUMLIT_VAL, "10"}, {NUMLIT_VAL, "3"}}, {NUMLIT_VAL, "3"}}}}
+********** FAILED **********
+    Test: Integer conversion: division + multiplication #2 - {PROGRAM, {PRINT_STMT, {{BIN_OP, "*"}, {{BIN_OP, "/"}, {NUMLIT_VAL, "-3"}, {NUMLIT_VAL, "2"}}, {NUMLIT_VAL, "2"}}}}
+********** FAILED **********
+Test Suite: if-statements
+    Test: If #1 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "4"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}}}
+********** FAILED **********
+    Test: If #2 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}}}
+passed
+    Test: If-else #1 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "5"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}}}
+********** FAILED **********
+    Test: If-else #2 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}}}
+********** FAILED **********
+    Test: If-elseif #1 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "6"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {NUMLIT_VAL, "7"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}}}
+********** FAILED **********
+    Test: If-elseif #2 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {NUMLIT_VAL, "7"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}}}
+********** FAILED **********
+    Test: If-elseif #3 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}}}
+passed
+    Test: If-elseif-else #1 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "6"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {NUMLIT_VAL, "7"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"c\""}}}}}
+********** FAILED **********
+    Test: If-elseif-else #2 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {NUMLIT_VAL, "7"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"c\""}}}}}
+********** FAILED **********
+    Test: If-elseif-else #3 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"c\""}}}}}
+********** FAILED **********
+    Test: If-elseif*-else #1 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "8"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"c\""}}}, {NUMLIT_VAL, "9"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"d\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"e\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"f\""}}}}}
+********** FAILED **********
+    Test: If-elseif*-else #2 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"c\""}}}, {NUMLIT_VAL, "9"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"d\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"e\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"f\""}}}}}
+********** FAILED **********
+    Test: If-elseif*-else #3 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"c\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"d\""}}}, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"e\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"f\""}}}}}
+********** FAILED **********
+    Test: Nested if-else #1 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "1"}, {PROGRAM, {IF_STMT, {NUMLIT_VAL, "1"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}}}, {PROGRAM, {IF_STMT, {NUMLIT_VAL, "1"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"c\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"d\""}}}}}}}
+********** FAILED **********
+    Test: Nested if-else #2 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "1"}, {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}}}, {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"c\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"d\""}}}}}}}
+********** FAILED **********
+    Test: Nested if-else #3 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {IF_STMT, {NUMLIT_VAL, "1"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}}}, {PROGRAM, {IF_STMT, {NUMLIT_VAL, "1"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"c\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"d\""}}}}}}}
+********** FAILED **********
+    Test: Nested if-else #4 - {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"a\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"b\""}}}}}, {PROGRAM, {IF_STMT, {NUMLIT_VAL, "0"}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"c\""}}}, {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"d\""}}}}}}}
+********** FAILED **********
+Test Suite: while-loops
+    Test: While loop: counted - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "0"}}, {WHILE_LOOP, {{BIN_OP, "<"}, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "7"}}, {PROGRAM, {PRINT_STMT, {{BIN_OP, "*"}, {SIMPLE_VAR, "i"}, {SIMPLE_VAR, "i"}}}, {ASSN_STMT, {SIMPLE_VAR, "i"}, {{BIN_OP, "+"}, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "1"}}}}}}
+********** FAILED **********
+    Test: While loop: input with sentinel - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "notdone"}, {NUMLIT_VAL, "1"}}, {WHILE_LOOP, {SIMPLE_VAR, "notdone"}, {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "n"}, {READ_CALL}}, {IF_STMT, {{BIN_OP, "=="}, {SIMPLE_VAR, "n"}, {NUMLIT_VAL, "99"}}, {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "notdone"}, {NUMLIT_VAL, "0"}}}, {PROGRAM, {PRINTLN_STMT, {SIMPLE_VAR, "n"}}}}}}, {PRINTLN_STMT, {STRLIT_OUT, "\"Bye!\""}}}
+********** FAILED **********
+Test Suite: returning a value
+    Test: Writing a return value - {PROGRAM, {FUNC_DEF, "sq", {PROGRAM, {RETURN_STMT, {{BIN_OP, "*"}, {SIMPLE_VAR, "a"}, {SIMPLE_VAR, "a"}}}}}, {ASSN_STMT, {SIMPLE_VAR, "a"}, {NUMLIT_VAL, "7"}}, {PRINTLN_STMT, {FUNC_CALL, "sq"}}}
+********** FAILED **********
+    Test: Assigning a return value - {PROGRAM, {FUNC_DEF, "sq", {PROGRAM, {RETURN_STMT, {{BIN_OP, "*"}, {SIMPLE_VAR, "a"}, {SIMPLE_VAR, "a"}}}}}, {ASSN_STMT, {SIMPLE_VAR, "a"}, {NUMLIT_VAL, "7"}}, {ASSN_STMT, {SIMPLE_VAR, "c"}, {FUNC_CALL, "sq"}}}
+********** FAILED **********
+    Test: Returning a return value - {PROGRAM, {FUNC_DEF, "p", {PROGRAM, {RETURN_STMT, {{BIN_OP, "+"}, {SIMPLE_VAR, "a"}, {NUMLIT_VAL, "2"}}}}}, {FUNC_DEF, "sq2", {PROGRAM, {RETURN_STMT, {{BIN_OP, "*"}, {FUNC_CALL, "p"}, {FUNC_CALL, "p"}}}}}, {ASSN_STMT, {SIMPLE_VAR, "a"}, {NUMLIT_VAL, "7"}}, {ASSN_STMT, {SIMPLE_VAR, "c"}, {FUNC_CALL, "sq2"}}}
+********** FAILED **********
+    Test: Returning a value that is not used - {PROGRAM, {FUNC_DEF, "sq", {PROGRAM, {RETURN_STMT, {{BIN_OP, "*"}, {SIMPLE_VAR, "a"}, {SIMPLE_VAR, "a"}}}}}, {ASSN_STMT, {SIMPLE_VAR, "a"}, {NUMLIT_VAL, "7"}}, {FUNC_CALL, "sq"}}
+{PROGRAM, {RETURN_STMT, {{BIN_OP, "*"}, {SIMPLE_VAR, "a"}, {SIMPLE_VAR, "a"}}}}
+passed
+    Test: Using a return value when nothing is returned - {PROGRAM, {FUNC_DEF, "f", {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "b"}, {{BIN_OP, "*"}, {SIMPLE_VAR, "a"}, {SIMPLE_VAR, "a"}}}}}, {ASSN_STMT, {SIMPLE_VAR, "a"}, {NUMLIT_VAL, "7"}}, {PRINTLN_STMT, {FUNC_CALL, "f"}}}
+********** FAILED **********
+    Test: Using a previous return value - {PROGRAM, {FUNC_DEF, "f", {PROGRAM, {RETURN_STMT, {NUMLIT_VAL, "8"}}}}, {FUNC_DEF, "g", {PROGRAM, {PRINT_STMT, {STRLIT_OUT, "\"x\""}}}}, {FUNC_CALL, "f"}, {ASSN_STMT, {SIMPLE_VAR, "a"}, {FUNC_CALL, "g"}}}
+{PROGRAM, {RETURN_STMT, {NUMLIT_VAL, "8"}}}
+********** FAILED **********
+Test Suite: random numbers
+    Test: Single rnd call - {PROGRAM, {PRINT_STMT, {RND_CALL, {NUMLIT_VAL, "10"}}}}
+********** FAILED **********
+    Test: Many rnd calls - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "0"}}, {WHILE_LOOP, {{BIN_OP, "<"}, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "100"}}, {PROGRAM, {PRINT_STMT, {RND_CALL, {SIMPLE_VAR, "i"}}}, {ASSN_STMT, {SIMPLE_VAR, "i"}, {{BIN_OP, "+"}, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "1"}}}}}}
+********** FAILED **********
+    Test: Recursive rnd calls - {PROGRAM, {PRINT_STMT, {RND_CALL, {RND_CALL, {{BIN_OP, "+"}, {NUMLIT_VAL, "1"}, {RND_CALL, {RND_CALL, {NUMLIT_VAL, "10"}}}}}}}}
+********** FAILED **********
+    Test: rnd call on complex expression - {PROGRAM, {ASSN_STMT, {ARRAY_VAR, "x", {NUMLIT_VAL, "3"}}, {NUMLIT_VAL, "7"}}, {PRINT_STMT, {RND_CALL, {{BIN_OP, "+"}, {{BIN_OP, "*"}, {ARRAY_VAR, "x", {{BIN_OP, "+"}, {NUMLIT_VAL, "1"}, {NUMLIT_VAL, "2"}}}, {NUMLIT_VAL, "4"}}, {{BIN_OP, "*"}, {NUMLIT_VAL, "7"}, {READ_CALL}}}}}}
+********** FAILED **********
+Test Suite: increment & decrement statements
+    Test: Increment simple variable - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "a"}, {NUMLIT_VAL, "2"}}, {INC_STMT, {SIMPLE_VAR, "a"}}}
+passed
+    Test: Decrement simple variable - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "b"}, {NUMLIT_VAL, "5"}}, {DEC_STMT, {SIMPLE_VAR, "b"}}}
+passed
+    Test: Increment array item - {PROGRAM, {ASSN_STMT, {ARRAY_VAR, "c", {NUMLIT_VAL, "1"}}, {NUMLIT_VAL, "2"}}, {INC_STMT, {ARRAY_VAR, "c", {NUMLIT_VAL, "1"}}}}
+passed
+    Test: Decrement array item - {PROGRAM, {ASSN_STMT, {ARRAY_VAR, "d", {NUMLIT_VAL, "2"}}, {NUMLIT_VAL, "8"}}, {DEC_STMT, {ARRAY_VAR, "d", {NUMLIT_VAL, "2"}}}}
+passed
+    Test: Increment array item with side effect in index - {PROGRAM, {FUNC_DEF, "f", {PROGRAM, {INC_STMT, {ARRAY_VAR, "a", {NUMLIT_VAL, "3"}}}, {RETURN_STMT, {NUMLIT_VAL, "3"}}}}, {ASSN_STMT, {ARRAY_VAR, "a", {NUMLIT_VAL, "3"}}, {NUMLIT_VAL, "7"}}, {INC_STMT, {ARRAY_VAR, "a", {FUNC_CALL, "f"}}}}
+********** FAILED **********
+    Test: Increment array item with side effect in index - {PROGRAM, {FUNC_DEF, "f", {PROGRAM, {DEC_STMT, {ARRAY_VAR, "a", {NUMLIT_VAL, "3"}}}, {RETURN_STMT, {NUMLIT_VAL, "3"}}}}, {ASSN_STMT, {ARRAY_VAR, "a", {NUMLIT_VAL, "3"}}, {NUMLIT_VAL, "7"}}, {DEC_STMT, {ARRAY_VAR, "a", {FUNC_CALL, "f"}}}}
+********** FAILED **********
+Test Suite: fancy programs
+    Test: Recursion - {PROGRAM, {FUNC_DEF, "x", {PROGRAM, {PRINT_STMT, {SIMPLE_VAR, "c"}}, {ASSN_STMT, {SIMPLE_VAR, "c"}, {{BIN_OP, "-"}, {SIMPLE_VAR, "c"}, {NUMLIT_VAL, "1"}}}, {IF_STMT, {{BIN_OP, ">"}, {SIMPLE_VAR, "c"}, {NUMLIT_VAL, "0"}}, {PROGRAM, {FUNC_CALL, "x"}}}}}, {ASSN_STMT, {SIMPLE_VAR, "c"}, {NUMLIT_VAL, "3"}}, {FUNC_CALL, "x"}}
+{PROGRAM, {PRINT_STMT, {SIMPLE_VAR, "c"}}, {ASSN_STMT, {SIMPLE_VAR, "c"}, {{BIN_OP, "-"}, {SIMPLE_VAR, "c"}, {NUMLIT_VAL, "1"}}}, {IF_STMT, {{BIN_OP, ">"}, {SIMPLE_VAR, "c"}, {NUMLIT_VAL, "0"}}, {PROGRAM, {FUNC_CALL, "x"}}}}
+********** FAILED **********
+    Test: Using complex expression as array index - {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "0"}}, {WHILE_LOOP, {{BIN_OP, "<"}, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "100"}}, {PROGRAM, {ASSN_STMT, {ARRAY_VAR, "a", {{BIN_OP, "=="}, {{BIN_OP, "%"}, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "3"}}, {NUMLIT_VAL, "0"}}}, {{BIN_OP, "+"}, {ARRAY_VAR, "a", {{BIN_OP, "=="}, {{BIN_OP, "%"}, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "3"}}, {NUMLIT_VAL, "0"}}}, {NUMLIT_VAL, "1"}}}, {ASSN_STMT, {SIMPLE_VAR, "i"}, {{BIN_OP, "+"}, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "1"}}}}}}
+********** FAILED **********
+    Test: Fibonacci example - {PROGRAM, {FUNC_DEF, "fibo", {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "currfib"}, {NUMLIT_VAL, "0"}}, {ASSN_STMT, {SIMPLE_VAR, "nextfib"}, {NUMLIT_VAL, "1"}}, {ASSN_STMT, {SIMPLE_VAR, "i"}, {NUMLIT_VAL, "0"}}, {WHILE_LOOP, {{BIN_OP, "<"}, {SIMPLE_VAR, "i"}, {SIMPLE_VAR, "n"}}, {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "tmp"}, {{BIN_OP, "+"}, {SIMPLE_VAR, "currfib"}, {SIMPLE_VAR, "nextfib"}}}, {ASSN_STMT, {SIMPLE_VAR, "currfib"}, {SIMPLE_VAR, "nextfib"}}, {ASSN_STMT, {SIMPLE_VAR, "nextfib"}, {SIMPLE_VAR, "tmp"}}, {INC_STMT, {SIMPLE_VAR, "i"}}}}, {RETURN_STMT, {SIMPLE_VAR, "currfib"}}}}, {ASSN_STMT, {SIMPLE_VAR, "how_many_to_print"}, {NUMLIT_VAL, "20"}}, {PRINTLN_STMT, {STRLIT_OUT, "\"Fibonacci Numbers\""}}, {ASSN_STMT, {SIMPLE_VAR, "j"}, {NUMLIT_VAL, "0"}}, {WHILE_LOOP, {{BIN_OP, "<"}, {SIMPLE_VAR, "j"}, {SIMPLE_VAR, "how_many_to_print"}}, {PROGRAM, {ASSN_STMT, {SIMPLE_VAR, "n"}, {SIMPLE_VAR, "j"}}, {ASSN_STMT, {SIMPLE_VAR, "ff"}, {FUNC_CALL, "fibo"}}, {PRINTLN_STMT, {STRLIT_OUT, "\"F(\""}, {SIMPLE_VAR, "j"}, {STRLIT_OUT, "\") = \""}, {SIMPLE_VAR, "ff"}}, {INC_STMT, {SIMPLE_VAR, "j"}}}}, {PRINTLN_STMT}}
+********** FAILED **********
+
+Tests ********** UNSUCCESSFUL **********
+
+**************************************************
+* This test program is configured to execute all *
+* tests, reporting success/failure for each. To  *
+* make it exit after the first failing test, set *
+* variable                                       *
+*                                                *
+*   EXIT_ON_FIRST_FAILURE                        *
+*                                                *
+* to true, near the start of the test program.   *
+**************************************************
